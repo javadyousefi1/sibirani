@@ -1,0 +1,19 @@
+echo "🎨 formatting code..."
+npx oxfmt src
+
+echo "📦 staging formatted files..."
+git add -u
+
+echo "🔍 running lint fix..."
+npx oxlint --fix src
+
+echo "📦 staging fixed files..."
+git add -u
+
+echo "🔍 running lint check..."
+npx oxlint src || { echo "❌ lint failed. commit aborted."; exit 1; }
+
+echo "🧪 running tests..."
+npx vitest run || { echo "❌ tests failed. commit aborted."; exit 1; }
+
+echo "✅ all checks passed!"
